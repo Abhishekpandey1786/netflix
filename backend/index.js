@@ -14,24 +14,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// ✅ ALLOWED ORIGINS
+// ---------- CORS ----------
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://netflix-oidqsnk8z-abhishekpandey1786s-projects.vercel.app"
+  "https://moviepro.vercel.app/"
 ];
 
-// ✅ CORS CONFIG (FULL FIX)
 app.use(
   cors({
     origin: function (origin, callback) {
-      // allow Postman / server requests
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("CORS not allowed"));
-      }
+      if (!origin) return callback(null, true); // allow Postman / server
+      if (allowedOrigins.includes(origin)) callback(null, true);
+      else callback(new Error("CORS not allowed"));
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -39,7 +33,7 @@ app.use(
   })
 );
 
-// 🔥 IMPORTANT: Preflight fix
+// Preflight requests
 app.options("*", cors());
 
 // ---------- DATABASE ----------
@@ -64,6 +58,4 @@ app.get("/", (req, res) => {
 
 // ---------- SERVER ----------
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
