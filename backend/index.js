@@ -18,7 +18,7 @@ app.use(cookieParser());
 // Best Practice: Remove the trailing slash from the Vercel URL
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://movietraliour.netlify.app/" 
+  "https://movietraliour.netlify.app" 
 ];
 
 app.use(
